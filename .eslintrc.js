@@ -11,7 +11,12 @@ module.exports = {
     "import/resolver": {
       "babel-module": {
         alias: {
-          components: "./app/components",
+          assets: "./src/assets",
+          components: "./src/components",
+          constants: "./src/constants",
+          screens: "./src/screens",
+          styles: "./src/styles",
+          utils: "./src/utils",
         },
         allowExistingDirectories: true,
       },

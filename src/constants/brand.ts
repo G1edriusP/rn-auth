@@ -21,3 +21,5 @@ export const fontMedium = "Montserrat-Medium";
 // Colors
 export const aBlack = "#000000";
 export const aWhite = "#FFFFFF";
+export const aOrange = "#F58840";
+export const aRed = "#B85252";

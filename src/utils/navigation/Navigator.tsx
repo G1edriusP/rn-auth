@@ -16,7 +16,7 @@ const RootStack = createNativeStackNavigator<RootStackParams>();
 
 const InitNavigator = () => (
   <RootStack.Navigator>
-    <RootStack.Screen name={NAV.LOGIN} component={LoginScreen} />
+    <RootStack.Screen name={NAV.LOGIN} component={LoginScreen} options={{ headerShown: false }} />
     <RootStack.Screen name={NAV.HOME} component={HomeScreen} />
   </RootStack.Navigator>
 );

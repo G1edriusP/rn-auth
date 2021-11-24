@@ -33,17 +33,21 @@ export default ({ route, navigation }: LoginScreenProps) => {
     setUser(old => ({ ...old, [field]: text }));
   }, []);
 
+  // If login returned success then navigate to home screen
   const onLoginSuccess = useCallbackOne((response: AxiosResponse) => {
     console.log(response);
+    onLoadingChange(false);
   }, []);
 
+  // If logind returned error show alert
   const onLoginError = useCallbackOne((error: AxiosError) => {
     console.log(error);
+    onLoadingChange(false);
   }, []);
 
   // Send API request to try to login user
   const onLoginPress = useCallbackOne(() => {
-    // onLoadingChange(true);
+    onLoadingChange(true);
     const client = Client.getInstance();
     client.getCredentials(user).then(onLoginSuccess, onLoginError);
   }, [user]);
@@ -58,6 +62,7 @@ export default ({ route, navigation }: LoginScreenProps) => {
             onChangeText={text => onChangedText(Fields.username, text)}
             editable={!isLoading}
             placeholder={"Email"}
+            loading={isLoading}
           />
           <Input
             value={user.password}
@@ -65,10 +70,11 @@ export default ({ route, navigation }: LoginScreenProps) => {
             editable={!isLoading}
             placeholder={"Password"}
             secureTextEntry
+            loading={isLoading}
           />
         </View>
       </View>
-      <Button title={"Login"} onPress={onLoginPress} style={styles.button} />
+      <Button title={"Login"} onPress={onLoginPress} style={styles.button} loading={isLoading} />
     </View>
   );
 };

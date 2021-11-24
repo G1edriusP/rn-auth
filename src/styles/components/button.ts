@@ -4,6 +4,7 @@ import { aBlack, aRed, aWhite, fontMedium, RT, SCREEN_WIDTH, sideMargin } from "
 interface Styles {
   wrap: ViewStyle;
   title: TextStyle;
+  loader: ViewStyle;
 }
 
 export default StyleSheet.create<Styles>({
@@ -20,5 +21,9 @@ export default StyleSheet.create<Styles>({
     fontSize: RT(16),
     lineHeight: RT(24),
     color: aWhite,
+  },
+  loader: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: "center",
   },
 });

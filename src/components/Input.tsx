@@ -13,6 +13,7 @@ interface Props {
   keyboardType?: KeyboardTypeOptions;
   placeholder: string;
   secureTextEntry?: boolean;
+  loading: boolean;
 }
 
 export const Input: React.FC<Props> = memo(
@@ -23,10 +24,11 @@ export const Input: React.FC<Props> = memo(
     keyboardType = "default",
     placeholder,
     secureTextEntry,
+    loading,
   }): JSX.Element => {
     return (
       <TextInput
-        style={styles.input}
+        style={[styles.input, loading && styles.disabled]}
         value={value}
         onChangeText={onChangeText}
         editable={editable}
@@ -34,6 +36,7 @@ export const Input: React.FC<Props> = memo(
         placeholder={placeholder}
         textAlign={"center"}
         secureTextEntry={secureTextEntry}
+        autoCapitalize='none'
       />
     );
   },

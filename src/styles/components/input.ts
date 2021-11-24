@@ -3,6 +3,7 @@ import { aBlack, fontMedium, RT, SCREEN_WIDTH, sideMargin } from "constants/bran
 
 interface Styles {
   input: TextStyle;
+  disabled: TextStyle;
 }
 
 export default StyleSheet.create<Styles>({
@@ -16,5 +17,8 @@ export default StyleSheet.create<Styles>({
     fontSize: RT(16),
     paddingHorizontal: sideMargin,
     marginBottom: sideMargin,
+  },
+  disabled: {
+    opacity: 0.4,
   },
 });

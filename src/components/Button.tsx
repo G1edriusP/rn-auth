@@ -4,17 +4,34 @@ import React, { memo } from "react";
 import styles from "styles/components/button";
 
 // Components
-import { View, Text, TouchableOpacity, StyleProp, ViewStyle } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleProp,
+  ViewStyle,
+  ActivityIndicator,
+} from "react-native";
+import { aWhite } from "constants/brand";
 
-export const Button: React.FC<{
+interface Props {
   title: string;
   onPress: () => void;
   style?: StyleProp<ViewStyle>;
-}> = memo(({ title, onPress, style }) => {
+  loading?: boolean;
+}
+
+export const Button: React.FC<Props> = memo(({ title, onPress, style, loading }) => {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} disabled={loading}>
       <View style={[styles.wrap, style]}>
-        <Text style={styles.title}>{title}</Text>
+        {!loading ? (
+          <Text style={styles.title}>{title}</Text>
+        ) : (
+          <View style={styles.loader}>
+            <ActivityIndicator size={"small"} color={aWhite} />
+          </View>
+        )}
       </View>
     </TouchableOpacity>
   );

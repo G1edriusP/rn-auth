@@ -1,15 +1,21 @@
 import React from "react";
 
-import { View, Text } from "react-native";
-import { Button } from "components/Button";
+// Styling
+import styles from "styles/screens/app";
 
-const App = () => {
-  return (
-    <View>
-      <Text>App screen</Text>
-      <Button title={"Test"} />
-    </View>
-  );
-};
+// Components
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { View } from "react-native";
+import Navigator from "utils/navigation/Navigator";
+
+const App = (): JSX.Element => (
+  <SafeAreaProvider>
+    <SafeAreaView style={styles.root}>
+      <View style={styles.content}>
+        <Navigator />
+      </View>
+    </SafeAreaView>
+  </SafeAreaProvider>
+);
 
 export default App;

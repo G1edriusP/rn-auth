@@ -16,3 +16,15 @@ export interface SvgProps {
   size: number;
   color?: string;
 }
+
+// Api request objects
+export type UserInfo = {
+  username: string;
+  password: string;
+};
+
+// Api response objects
+export type Credentials = {
+  token: string;
+  refreshToken: string;
+};

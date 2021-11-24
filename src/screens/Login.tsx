@@ -10,33 +10,43 @@ import { Input, Button } from "components";
 import { Logo } from "assets/svg";
 
 // Other
-import { LoginScreenProps } from "constants/types";
+import { LoginScreenProps, UserInfo } from "constants/types";
 import { NAV } from "constants/navigation";
 import { RT } from "constants/brand";
-
-interface UserInfo {
-  email: string;
-  password: string;
-}
+import { Client } from "utils/api/Client";
+import { AxiosError, AxiosResponse } from "axios";
 
 enum Fields {
-  email = "email",
+  username = "username",
   password = "password",
 }
 
 export default ({ route, navigation }: LoginScreenProps) => {
-  const [user, setUser] = useState<UserInfo>({ email: "", password: "" });
+  const [user, setUser] = useState<UserInfo>({ username: "", password: "" });
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  // Change loading state
+  const onLoadingChange = useCallbackOne(value => setIsLoading(value), []);
+
+  // On input text change write new value to user state field depending on which input it's being typed on
   const onChangedText = useCallbackOne((field: string, text: string) => {
     setUser(old => ({ ...old, [field]: text }));
   }, []);
 
-  const onLoginPress = useCallbackOne(() => {
-    console.log("Login");
+  const onLoginSuccess = useCallbackOne((response: AxiosResponse) => {
+    console.log(response);
   }, []);
 
-  console.log(user);
+  const onLoginError = useCallbackOne((error: AxiosError) => {
+    console.log(error);
+  }, []);
+
+  // Send API request to try to login user
+  const onLoginPress = useCallbackOne(() => {
+    // onLoadingChange(true);
+    const client = Client.getInstance();
+    client.getCredentials(user).then(onLoginSuccess, onLoginError);
+  }, [user]);
 
   return (
     <View style={styles.wrap}>
@@ -44,8 +54,8 @@ export default ({ route, navigation }: LoginScreenProps) => {
         <Logo size={RT(48)} />
         <View style={styles.inputs}>
           <Input
-            value={user.email}
-            onChangeText={text => onChangedText(Fields.email, text)}
+            value={user.username}
+            onChangeText={text => onChangedText(Fields.username, text)}
             editable={!isLoading}
             placeholder={"Email"}
           />

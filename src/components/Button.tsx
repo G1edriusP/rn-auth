@@ -1,11 +1,21 @@
 import React, { memo } from "react";
 
-import { View, Text } from "react-native";
+// Styling
+import styles from "styles/components/button";
 
-export const Button: React.FC<{ title: string }> = memo(({ title }) => {
+// Components
+import { View, Text, TouchableOpacity, StyleProp, ViewStyle } from "react-native";
+
+export const Button: React.FC<{
+  title: string;
+  onPress: () => void;
+  style?: StyleProp<ViewStyle>;
+}> = memo(({ title, onPress, style }) => {
   return (
-    <View>
-      <Text>{title}</Text>
-    </View>
+    <TouchableOpacity onPress={onPress}>
+      <View style={[styles.wrap, style]}>
+        <Text style={styles.title}>{title}</Text>
+      </View>
+    </TouchableOpacity>
   );
 });

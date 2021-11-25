@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useCallbackOne } from "use-memo-one";
 
 // Styling
@@ -16,6 +16,8 @@ import { RT } from "constants/brand";
 import { Client } from "utils/api/Client";
 import { AxiosError } from "axios";
 import { setToken } from "utils/helpers/token";
+import { showAlert } from "utils/helpers/other";
+import { wrongLogin } from "constants/alert";
 enum Fields {
   username = "username",
   password = "password",
@@ -43,9 +45,8 @@ export default ({ route, navigation: { navigate } }: LoginScreenProps) => {
 
   // If login returned error show alert
   const onLoginError = useCallbackOne((error: AxiosError) => {
-    // TODO: show alert
-    console.log(error);
     onLoadingChange(false);
+    showAlert(wrongLogin());
   }, []);
 
   // Send API request to try to login user

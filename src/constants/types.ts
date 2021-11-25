@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { NAV } from "constants/navigation";
+import { AlertButton } from "react-native";
 
 // Navigators
 export type RootStackParams = {
@@ -44,4 +45,10 @@ export type KeychainConst = {
 };
 export type AuthConfig = {
   Authorization: string;
+};
+
+export type AlertParams = {
+  title: string;
+  message: string;
+  buttons: AlertButton[];
 };

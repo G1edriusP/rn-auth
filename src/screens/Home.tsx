@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState, memo } from "react";
 import { useCallbackOne } from "use-memo-one";
 
 // Styling
@@ -12,10 +12,9 @@ import { LabelText, Image } from "components";
 // Other
 import { HomeScreenProps, User } from "constants/types";
 import { Client } from "utils/api/Client";
-import { NAV } from "constants/navigation";
-import { removeToken } from "utils/helpers/token";
-import { resetNavigation } from "utils/helpers/other";
+import { showAlert } from "utils/helpers/other";
 import { aBlack } from "constants/brand";
+import { sessionsExpired } from "constants/alert";
 
 const initialParams: User = {
   uuid: "",
@@ -40,15 +39,12 @@ export default ({ route, navigation: { dispatch, setOptions } }: HomeScreenProps
 
   // If request returned error show alert
   const onGetError = useCallbackOne(async (error: AxiosError) => {
-    // TODO: show alert
-    await removeToken("accessToken")
-      .then(() => {
-        dispatch(resetNavigation(NAV.LOGIN));
-      })
-      .catch(e => console.log(e));
+    setUser({} as User);
     onLoadingChange(false);
+    showAlert(sessionsExpired(dispatch));
   }, []);
 
+  // Get user info on screen mount
   useLayoutEffect(() => {
     onLoadingChange(true);
     const client = Client.getInstance();
@@ -56,8 +52,23 @@ export default ({ route, navigation: { dispatch, setOptions } }: HomeScreenProps
   }, []);
 
   useEffect(() => {
-    setOptions({ loading: isLoading });
-  }, [isLoading]);
+    if (Object.keys(user).length) setOptions({ loading: isLoading });
+  }, [isLoading, user]);
+
+  // If session not expired and user state has info return content
+  const Content: React.FC<{}> = memo(
+    (): JSX.Element =>
+      Object.keys(user).length ? (
+        <>
+          <Image uri={user.image} style={styles.image} />
+          <LabelText label='Name' text={`${user.firstName} ${user.lastName}`} />
+          <LabelText label='Address' text={user.address} />
+          <LabelText label='Phone' text={user.phone} />
+        </>
+      ) : (
+        <></>
+      ),
+  );
 
   return (
     <ScrollView style={styles.wrap} contentContainerStyle={styles.content}>
@@ -66,12 +77,7 @@ export default ({ route, navigation: { dispatch, setOptions } }: HomeScreenProps
           <ActivityIndicator size='large' color={aBlack} />
         </View>
       ) : (
-        <>
-          <Image uri={user.image} style={styles.image} />
-          <LabelText label='Name' text={`${user.firstName} ${user.lastName}`} />
-          <LabelText label='Address' text={user.address} />
-          <LabelText label='Phone' text={user.phone} />
-        </>
+        <Content />
       )}
     </ScrollView>
   );

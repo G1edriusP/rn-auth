@@ -10,12 +10,12 @@ import { Input, Button } from "components";
 import { Logo } from "assets/svg";
 
 // Other
-import { LoginScreenProps, UserInfo } from "constants/types";
+import { Credentials, LoginScreenProps, UserInfo } from "constants/types";
 import { NAV } from "constants/navigation";
 import { RT } from "constants/brand";
 import { Client } from "utils/api/Client";
-import { AxiosError, AxiosResponse } from "axios";
-import { getToken, setToken } from "utils/helpers/token";
+import { AxiosError } from "axios";
+import { setToken } from "utils/helpers/token";
 
 enum Fields {
   username = "username",
@@ -35,14 +35,14 @@ export default ({ route, navigation: { navigate } }: LoginScreenProps) => {
   }, []);
 
   // If login returned success then navigate to home screen
-  const onLoginSuccess = useCallbackOne(async (response: AxiosResponse) => {
+  const onLoginSuccess = useCallbackOne(async (response: Credentials) => {
     const { token } = response;
     await setToken(token, "accessToken").catch(e => console.log(e));
     navigate(NAV.HOME);
     onLoadingChange(false);
   }, []);
 
-  // If logind returned error show alert
+  // If login returned error show alert
   const onLoginError = useCallbackOne((error: AxiosError) => {
     // TODO: show alert
     console.log(error);

@@ -15,6 +15,7 @@ import { Platform } from "react-native";
 import { Header } from "components";
 
 // Screens
+import SplashScreen from "screens/Splash";
 import HomeScreen from "screens/Home";
 import LoginScreen from "screens/Login";
 
@@ -42,9 +43,10 @@ const customHeader: StackNavigationOptions = {
 };
 
 const InitNavigator = () => (
-  <RootStack.Navigator>
+  <RootStack.Navigator initialRouteName={NAV.SPLASH} screenOptions={customHeader}>
+    <RootStack.Screen name={NAV.SPLASH} component={SplashScreen} options={noHeader} />
     <RootStack.Screen name={NAV.LOGIN} component={LoginScreen} options={noHeader} />
-    <RootStack.Screen name={NAV.HOME} component={HomeScreen} options={customHeader} />
+    <RootStack.Screen name={NAV.HOME} component={HomeScreen} />
   </RootStack.Navigator>
 );
 

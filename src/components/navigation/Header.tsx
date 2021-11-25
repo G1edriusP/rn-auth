@@ -15,7 +15,9 @@ import { removeToken } from "utils/helpers/token";
 import { StackHeaderProps } from "@react-navigation/stack";
 import { NAV } from "constants/navigation";
 
-export const Header = memo(({ navigation: { dispatch } }: StackHeaderProps) => {
+export const Header = memo(({ route, navigation: { dispatch }, options }: StackHeaderProps) => {
+  const { loading = true } = options;
+
   const [isLoading, setIsLoading] = useState(false);
 
   const onLoadingChange = useCallbackOne(value => setIsLoading(value), []);
@@ -42,9 +44,11 @@ export const Header = memo(({ navigation: { dispatch } }: StackHeaderProps) => {
   return (
     <View style={styles.wrap}>
       <View style={styles.button}>
-        <TouchableOpacity onPress={onLogoutPress} disabled={isLoading}>
-          <Logout size={RT(24)} />
-        </TouchableOpacity>
+        {loading ? null : (
+          <TouchableOpacity onPress={onLogoutPress} disabled={isLoading}>
+            <Logout size={RT(24)} />
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );

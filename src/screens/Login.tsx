@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useCallbackOne } from "use-memo-one";
 
 // Styling
@@ -16,7 +16,6 @@ import { RT } from "constants/brand";
 import { Client } from "utils/api/Client";
 import { AxiosError } from "axios";
 import { setToken } from "utils/helpers/token";
-
 enum Fields {
   username = "username",
   password = "password",

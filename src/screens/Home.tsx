@@ -1,17 +1,21 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
+import { useCallbackOne } from "use-memo-one";
 
 // Styling
 import styles from "styles/screens/home";
 
 // Components
-import { View, Text } from "react-native";
+import { View, ActivityIndicator, ScrollView } from "react-native";
+import { AxiosError } from "axios";
+import { LabelText, Image } from "components";
 
 // Other
 import { HomeScreenProps, User } from "constants/types";
 import { Client } from "utils/api/Client";
-import { useCallbackOne } from "use-memo-one";
-import { AxiosError } from "axios";
-import { LabelText, Image } from "components";
+import { NAV } from "constants/navigation";
+import { removeToken } from "utils/helpers/token";
+import { resetNavigation } from "utils/helpers/other";
+import { aBlack } from "constants/brand";
 
 const initialParams: User = {
   uuid: "",
@@ -22,22 +26,26 @@ const initialParams: User = {
   phone: "",
 };
 
-export default ({ route, navigation }: HomeScreenProps) => {
+export default ({ route, navigation: { dispatch, setOptions } }: HomeScreenProps) => {
   const [user, setUser] = useState<User>(initialParams);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const onLoadingChange = useCallbackOne(value => setIsLoading(value), []);
 
   // If request returned success then save info to state
-  const onGetSuccess = useCallbackOne((response: User) => {
+  const onGetSuccess = useCallbackOne(async (response: User) => {
     setUser(response);
     onLoadingChange(false);
   }, []);
 
   // If request returned error show alert
-  const onGetError = useCallbackOne((error: AxiosError) => {
+  const onGetError = useCallbackOne(async (error: AxiosError) => {
     // TODO: show alert
-    console.log(error);
+    await removeToken("accessToken")
+      .then(() => {
+        dispatch(resetNavigation(NAV.LOGIN));
+      })
+      .catch(e => console.log(e));
     onLoadingChange(false);
   }, []);
 
@@ -47,14 +55,24 @@ export default ({ route, navigation }: HomeScreenProps) => {
     client.getUser().then(onGetSuccess, onGetError);
   }, []);
 
-  console.log(user);
+  useEffect(() => {
+    setOptions({ loading: isLoading });
+  }, [isLoading]);
 
   return (
-    <View style={styles.wrap}>
-      <Image />
-      <LabelText label='Name' text={`${user.firstName} ${user.lastName}`} />
-      <LabelText label='Address' text={user.address} />
-      <LabelText label='Phone' text={user.phone} />
-    </View>
+    <ScrollView style={styles.wrap} contentContainerStyle={styles.content}>
+      {isLoading ? (
+        <View style={styles.loading}>
+          <ActivityIndicator size='large' color={aBlack} />
+        </View>
+      ) : (
+        <>
+          <Image uri={user.image} style={styles.image} />
+          <LabelText label='Name' text={`${user.firstName} ${user.lastName}`} />
+          <LabelText label='Address' text={user.address} />
+          <LabelText label='Phone' text={user.phone} />
+        </>
+      )}
+    </ScrollView>
   );
 };

@@ -11,6 +11,7 @@ import { HomeScreenProps, User } from "constants/types";
 import { Client } from "utils/api/Client";
 import { useCallbackOne } from "use-memo-one";
 import { AxiosError } from "axios";
+import { LabelText, Image } from "components";
 
 const initialParams: User = {
   uuid: "",
@@ -46,9 +47,14 @@ export default ({ route, navigation }: HomeScreenProps) => {
     client.getUser().then(onGetSuccess, onGetError);
   }, []);
 
+  console.log(user);
+
   return (
     <View style={styles.wrap}>
-      <Text>Home screen</Text>
+      <Image />
+      <LabelText label='Name' text={`${user.firstName} ${user.lastName}`} />
+      <LabelText label='Address' text={user.address} />
+      <LabelText label='Phone' text={user.phone} />
     </View>
   );
 };

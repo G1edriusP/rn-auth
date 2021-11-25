@@ -28,7 +28,18 @@ export type Credentials = {
   token: string;
   refreshToken: string;
 };
+export type User = {
+  uuid: string;
+  image: string;
+  firstName: string;
+  lastName: string;
+  address: string;
+  phone: string;
+};
 
 export type KeychainConst = {
   accessToken: string;
+};
+export type AuthConfig = {
+  Authorization: string;
 };

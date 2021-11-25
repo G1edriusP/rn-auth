@@ -36,6 +36,6 @@ yarn react-native run-android
 Thats it.
 
 ## Testing data:
-_E-mail:_ **john.doe@nfq.lt**
-_Password:_ **johndoe**
+_E-mail:_&ensp; **john.doe@nfq.lt**<br />
+_Password:_&ensp; **johndoe**
 

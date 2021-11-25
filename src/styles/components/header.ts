@@ -8,14 +8,15 @@ interface Styles {
 
 export default StyleSheet.create<Styles>({
   wrap: {
-    shadowColor: "#000000",
+    shadowColor: aBlack,
     shadowOffset: {
       width: 0,
       height: 2,
     },
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
-    elevation: 4,
+    elevation: 6,
+    backgroundColor: aBlack,
   },
   button: {
     width: "100%",

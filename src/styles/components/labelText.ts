@@ -10,7 +10,7 @@ interface Styles {
 export default StyleSheet.create<Styles>({
   wrap: {
     flexDirection: "column",
-    marginVertical: sideMargin,
+    marginVertical: sideMargin / 1.5,
   },
   label: {
     fontFamily: fontRegular,

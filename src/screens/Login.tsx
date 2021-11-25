@@ -15,13 +15,14 @@ import { NAV } from "constants/navigation";
 import { RT } from "constants/brand";
 import { Client } from "utils/api/Client";
 import { AxiosError, AxiosResponse } from "axios";
+import { getToken, setToken } from "utils/helpers/token";
 
 enum Fields {
   username = "username",
   password = "password",
 }
 
-export default ({ route, navigation }: LoginScreenProps) => {
+export default ({ route, navigation: { navigate } }: LoginScreenProps) => {
   const [user, setUser] = useState<UserInfo>({ username: "", password: "" });
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -34,13 +35,16 @@ export default ({ route, navigation }: LoginScreenProps) => {
   }, []);
 
   // If login returned success then navigate to home screen
-  const onLoginSuccess = useCallbackOne((response: AxiosResponse) => {
-    console.log(response);
+  const onLoginSuccess = useCallbackOne(async (response: AxiosResponse) => {
+    const { token } = response;
+    await setToken(token, "accessToken").catch(e => console.log(e));
+    navigate(NAV.HOME);
     onLoadingChange(false);
   }, []);
 
   // If logind returned error show alert
   const onLoginError = useCallbackOne((error: AxiosError) => {
+    // TODO: show alert
     console.log(error);
     onLoadingChange(false);
   }, []);
@@ -48,7 +52,9 @@ export default ({ route, navigation }: LoginScreenProps) => {
   // Send API request to try to login user
   const onLoginPress = useCallbackOne(() => {
     onLoadingChange(true);
+    // Get Singleton instance
     const client = Client.getInstance();
+    // Make a request
     client.getCredentials(user).then(onLoginSuccess, onLoginError);
   }, [user]);
 

@@ -28,3 +28,7 @@ export type Credentials = {
   token: string;
   refreshToken: string;
 };
+
+export type KeychainConst = {
+  accessToken: string;
+};

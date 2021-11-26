@@ -3,6 +3,7 @@
 Small React Native project using TypeScript where you can use NFQ mock authorization.
 
 ## :eyes: To do:
+- [ ] Allow app to work only in Portrait mode
 - [ ] Custom alerts
 - [ ] Animated text input
 - [ ] Broader error handling
